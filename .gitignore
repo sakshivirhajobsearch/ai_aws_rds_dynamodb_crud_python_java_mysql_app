@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local config / secrets
+.env
+.env.*
+
+# Virtual environments
+env/
+venv/
+ai-env/
+
+# Logs
+*.log
+logs/
+
+# Java
+target/
+*.class
+*.jar
+
+# Ignore test or sample data
+*.csv
+*.json
+*.db
+*.sqlite3
+
+# System
+.DS_Store
+Thumbs.db
+
+.pydevproject
+.project
+.settings/
