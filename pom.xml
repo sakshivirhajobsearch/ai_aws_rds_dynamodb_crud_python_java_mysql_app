@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ai.aws.rds.dynamodb</groupId>
-	<artifactId>ai_aws_rds_dynamodb_crud_python_java_mysql</artifactId>
+	<artifactId>ai_aws_rds_dynamodb_crud_python_java_mysql_app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
