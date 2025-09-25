@@ -19,6 +19,8 @@ import com.ai.aws.rds.dynamodb.repository.DynamoDBRepository;
 import com.ai.aws.rds.dynamodb.repository.RDSRepository;
 
 public class UnifiedGUI {
+	
+	private static final long serialVersionUID = 1L;
 
 	private JFrame frame;
 	private JTable table;
