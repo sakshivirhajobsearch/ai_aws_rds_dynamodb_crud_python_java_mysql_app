@@ -5,65 +5,46 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 public class FlaskClient {
 
-	public static void main(String[] args) {
+	public static String callAI(double[] input) {
+		
 		try {
-			// 🔗 Flask Endpoint
 			URL url = new URL("http://localhost:5000/predict");
-
-			// 🌐 Open HTTP connection
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
-			con.setConnectTimeout(5000); // 5 seconds connect timeout
-			con.setReadTimeout(5000); // 5 seconds read timeout
-			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			con.setRequestProperty("Content-Type", "application/json");
 			con.setDoOutput(true);
 
-			// 🧾 JSON Payload (adjust input as needed)
-			String jsonInputString = "{\"input\": [5.1, 3.5, 1.4, 0.2]}";
-			byte[] inputBytes = jsonInputString.getBytes(StandardCharsets.UTF_8);
+			StringBuilder json = new StringBuilder("{\"input\": [");
+			for (int i = 0; i < input.length; i++) {
+				json.append(input[i]);
+				if (i < input.length - 1)
+					json.append(", ");
+			}
+			json.append("]}");
 
-			// Set Content-Length (optional but good practice)
-			con.setRequestProperty("Content-Length", String.valueOf(inputBytes.length));
-
-			// 🚀 Send POST request
 			try (OutputStream os = con.getOutputStream()) {
-				os.write(inputBytes);
-				os.flush();
+				byte[] inputBytes = json.toString().getBytes("utf-8");
+				os.write(inputBytes, 0, inputBytes.length);
 			}
 
-			// ✅ Response Handling
-			int status = con.getResponseCode();
-			System.out.println("HTTP Status Code: " + status);
-
-			BufferedReader reader;
-			if (status >= 200 && status < 300) {
-				reader = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-			} else {
-				reader = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
-				System.out.println("⚠️ Error response from server:");
-			}
-
+			BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
 			StringBuilder response = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				response.append(line.trim());
+			String responseLine;
+			while ((responseLine = br.readLine()) != null) {
+				response.append(responseLine.trim());
 			}
-			reader.close();
-
-			System.out.println("🔁 Server Response: " + response.toString());
-
-			// 🔚 Disconnect
 			con.disconnect();
-
-		} catch (java.net.ConnectException ce) {
-			System.out.println("🚫 Unable to connect to Flask server at http://localhost:5000");
-			System.out.println("👉 Make sure the Flask server is running and reachable.");
+			return response.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			return "❌ Error calling AI: " + e.getMessage();
 		}
+	}
+
+	public static void main(String[] args) {
+		double[] example = { 1.0, 1.0 };
+		System.out.println("AI Response: " + callAI(example));
 	}
 }
