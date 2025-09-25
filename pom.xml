@@ -6,6 +6,7 @@
 	<groupId>com.ai.aws.rds.dynamodb</groupId>
 	<artifactId>ai_aws_rds_dynamodb_crud_python_java_mysql_app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
